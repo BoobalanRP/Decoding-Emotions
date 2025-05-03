@@ -45,7 +45,7 @@ def analyze():
     data = request.get_json()
     text = data['text']
     sentiment = analyze_sentiment(preprocess_text(text))
-    print(f"sentiment: {sentiment}")
+#     print(f"sentiment: {sentiment}")
 
     # Ensure the static directory exists
     static_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static')
@@ -62,7 +62,7 @@ def analyze():
 
     ax.bar(sentiments, values, color=colors)
     ax.set_title("Sentiment Distribution")
-    print(f"values: {values}")
+#     print(f"values: {values}")
 
     # Save plot
     plot_path = os.path.join(static_dir, 'sentiment_plot.png')

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        textarea {
+            width: 98.2%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #sentiment-result {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 80px;  /* Increased emoji size */
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 20px;  /* Increased padding */
+            margin: 15px;
+            border-radius: 8px;
+            width:50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Added shadow for more depth */
+        }
+        .card-container{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+        .card.positive {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .card.neutral {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        .card.negative {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .plot-container {
+            display: flex;
+            justify-content: center;  /* Centers horizontally */
+            align-items: center;      /* Centers vertically */
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .result img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sentiment Analysis: Decoding Emotions from Text</h1>
+    <textarea id="text-input" placeholder="Enter text for sentiment analysis..."></textarea><br><br>
+    <button onclick="analyzeText()">Analyze Sentiment</button>
+
+    <div class="result" id="result">
+        <div id="sentiment-result"></div>
+        <div id="sentiment-emoji" class="emoji"></div>
+        <div class="card-container">
+            <div id="sentiment-card" class="card">
+                <p>Sentiment: <span id="sentiment-label"></span></p>
+            </div>
+        </div>
+        <div class="plot-container">
+            <img id="sentiment-plot" style="display:none" />
+        </div>
+    </div>
+</div>
+
+<script>
+    function analyzeText() {
+        var text = document.getElementById('text-input').value;
+
+        fetch('/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: text })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const sentiment = data.sentiment;
+
+                const emoji = document.getElementById('sentiment-emoji');
+                const card = document.getElementById('sentiment-card');
+                const sentimentLabel = document.getElementById('sentiment-label');
+                const plotImg = document.getElementById('sentiment-plot');
+
+                // Display emojis and card styles
+                if (sentiment === 'Positive') {
+                    emoji.innerHTML = "😊";  // Positive emoji
+                    card.classList.add('positive');
+                    card.classList.remove('neutral', 'negative');
+                    sentimentLabel.innerText = "Positive";
+                } else if (sentiment === 'Neutral') {
+                    emoji.innerHTML = "🙂";
+                    card.classList.add('neutral');
+                    card.classList.remove('positive', 'negative');
+                    sentimentLabel.innerText = "Neutral";
+                } else if (sentiment === 'Negative') {
+                    emoji.innerHTML = "😞";  // Negative emoji
+                    card.classList.add('negative');
+                    card.classList.remove('positive', 'neutral');
+                    sentimentLabel.innerText = "Negative";
+                }
+
+                // Show plot
+                plotImg.src = data.plot_url;
+                plotImg.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
+<!--to run http://127.0.0.1:5000/-->

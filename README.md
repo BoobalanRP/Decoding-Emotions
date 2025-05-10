@@ -29,4 +29,7 @@ This project aims to analyze the emotions expressed in social media conversation
 - Pandas
 - Numpy
 ### Outputs
-![Positive text result](https://freeimage.host/i/3kyYupI)
+![positive analysis](https://freeimage.host/i/3kyYupI)
+![negative analysis](https://freeimage.host/i/3kyYupI)
+![natural analysis](https://freeimage.host/i/3kyYupI)
+[![3kyYupI.md.png](https://iili.io/3kyYupI.md.png)](https://freeimage.host/i/3kyYupI)

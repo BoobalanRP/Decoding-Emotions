@@ -28,3 +28,5 @@ This project aims to analyze the emotions expressed in social media conversation
 - Matplotlib
 - Pandas
 - Numpy
+### Outputs
+![Positive text result](https://freeimage.host/i/3kyYupI)
